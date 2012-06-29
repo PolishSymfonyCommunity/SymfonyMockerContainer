@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="./vendor/autoload.php" colors="true">
+
+    <testsuites>
+        <testsuite name="SymfonyMockerContainer test suite">
+            <directory suffix="Test.php">./PSS/SymfonyMockerContainer/Tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>./PSS</directory>
+            <exclude>
+                <directory>./PSS/SymfonyMockerContainer/Tests</directory>
+                <directory>./vendor</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

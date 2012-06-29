@@ -73,7 +73,8 @@ class AcmeContext extends BehatContext implements KernelAwareInterface
      */
     public function crmApiIsAvailable()
     {
-        $this->kernel->mockService('crm.client', 'PSS\Crm\Client')
+        $this->kernel->getContainer()
+            ->mockService('crm.client', 'PSS\Crm\Client')
             ->shouldReceive('send')
             ->once()
             ->andReturn(true);

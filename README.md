@@ -37,6 +37,8 @@ Clear your cache.
 Using in Behat steps
 --------------------
 
+Use `mockService()` method on the container to create a new Mock with Mockery:
+
     namespace PSS\Features\Context;
 
     use Behat\Symfony2Extension\Context\KernelAwareInterface;
@@ -82,6 +84,9 @@ Using in Behat steps
             \Mockery::close();
         }
     }
+
+Once service is mocked the container will return its mock instead of a real
+service.
 
 Using in Symfony functional tests
 ---------------------------------

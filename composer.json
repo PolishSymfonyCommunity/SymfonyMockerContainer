@@ -22,6 +22,5 @@
     },
     "autoload": {
         "psr-0": { "PSS\\SymfonyMockerContainer": "" }
-    },
-    "target-dir": "PSS/SymfonyMockerContainer"
+    }
 }

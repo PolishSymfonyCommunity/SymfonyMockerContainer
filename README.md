@@ -23,6 +23,8 @@ Add SymfonyMockerContainer to your composer.json:
 Replace base container class for test environment in `app/AppKernel.php`::
 
 ```php
+<?php
+
 /**
  * @return string
  */
@@ -44,6 +46,8 @@ Using in Behat steps
 Use `mockService()` method on the container to create a new Mock with Mockery:
 
 ```php
+<?php
+
 namespace PSS\Features\Context;
 
 use Behat\Behat\Context\BehatContext;
@@ -74,7 +78,8 @@ class AcmeContext extends BehatContext implements KernelAwareInterface
      */
     public function crmApiIsAvailable()
     {
-        $this->kernel->mockService('crm.client', 'PSS\Crm\Client')
+        $this->kernel->getContainer()
+            ->mockService('crm.client', 'PSS\Crm\Client')
             ->shouldReceive('send')
             ->once()
             ->andReturn(true);
@@ -99,6 +104,8 @@ Using in Symfony functional tests
 ---------------------------------
 
 ```php
+<?php
+
 namespace PSS\Bundle\AcmeBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

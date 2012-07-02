@@ -46,6 +46,7 @@ Use `mockService()` method on the container to create a new Mock with Mockery:
 ```php
 namespace PSS\Features\Context;
 
+use Behat\Behat\Context\BehatContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 

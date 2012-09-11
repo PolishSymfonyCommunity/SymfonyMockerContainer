@@ -43,7 +43,7 @@ Clear your cache.
 Using in Behat steps
 --------------------
 
-Use `mockService()` method on the container to create a new Mock with Mockery:
+Use `mock()` method on the container to create a new Mock with Mockery:
 
 ```php
 <?php
@@ -79,7 +79,7 @@ class AcmeContext extends BehatContext implements KernelAwareInterface
     public function crmApiIsAvailable()
     {
         $this->kernel->getContainer()
-            ->mockService('crm.client', 'PSS\Crm\Client')
+            ->mock('crm.client', 'PSS\Crm\Client')
             ->shouldReceive('send')
             ->once()
             ->andReturn(true);
@@ -139,7 +139,7 @@ class AcmeControllerTest extends WebTestCase
 
     public function testThatContactDetailsAreSubmittedToTheCrm()
     {
-        $this->client->getContainer()->mockService('crm.client', 'PSS\Crm\Client')
+        $this->client->getContainer()->mock('crm.client', 'PSS\Crm\Client')
             ->shouldReceive('send')
             ->once()
             ->andReturn(true);

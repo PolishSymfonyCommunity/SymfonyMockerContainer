@@ -21,6 +21,6 @@
         "mockery/mockery":              ">=0.7.0"
     },
     "autoload": {
-        "psr-0": { "PSS\\SymfonyMockerContainer": "" }
+        "psr-0": { "PSS\\SymfonyMockerContainer": "src/" }
     }
 }

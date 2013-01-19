@@ -7,6 +7,9 @@ Mocker container enables you to mock services in the Symfony dependency
 injection container. It is particularly useful in functional tests and
 Behat scenarios.
 
+If you want to use the mocker container with Behat try the
+[Symfony2 Mocker Extension](https://github.com/PolishSymfonyCommunity/Symfony2MockerExtension).
+
 Installation
 ------------
 

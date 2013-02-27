@@ -13,3 +13,4 @@ script: phpunit --coverage-text
 notifications:
   email:
     - jakub+ci@zalas.pl
+  irc: "irc.freenode.org#symfony-pl"

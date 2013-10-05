@@ -36,7 +36,7 @@ protected function getContainerBaseClass()
     if ('test' == $this->environment) {
         return '\PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer';
     }
-    
+
     return parent::getContainerBaseClass();
 }
 ```
@@ -46,7 +46,7 @@ Clear your cache.
 Using in Behat steps
 --------------------
 
-Use `mock()` method on the container to create a new Mock with Mockery:
+Use `mock()` method on the container to create a new Mock with Prophecy:
 
 ```php
 <?php
@@ -83,9 +83,8 @@ class AcmeContext extends BehatContext implements KernelAwareInterface
     {
         $this->kernel->getContainer()
             ->mock('crm.client', 'PSS\Crm\Client')
-            ->shouldReceive('send')
-            ->once()
-            ->andReturn(true);
+            ->send()
+            ->willReturn(true);
     }
 
     /**
@@ -95,7 +94,7 @@ class AcmeContext extends BehatContext implements KernelAwareInterface
      */
     public function verifyPendingExpectations()
     {
-        \Mockery::close();
+        $this->kernel->getContainer()->checkPredictions();
     }
 }
 ```

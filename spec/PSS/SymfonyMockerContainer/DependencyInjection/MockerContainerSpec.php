@@ -4,6 +4,7 @@ namespace spec\PSS\SymfonyMockerContainer\DependencyInjection;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Prophecy\Prophet;
 
 class MockerContainerSpec extends ObjectBehavior
 {
@@ -47,8 +48,8 @@ class MockerContainerSpec extends ObjectBehavior
 
         $mock = $this->mock('std_class.mock', '\StdClass');
 
-        $mock->shouldBeAnInstanceOf('\StdClass');
-        $mock->shouldImplement('\Prophecy\Prophecy\ProphecySubjectInterface');
+        $mock->shouldImplement('\Prophecy\Prophecy\ObjectProphecy');
+        $mock->reveal()->shouldBeAnInstanceOf('\StdClass');
     }
 
     function it_doesnt_mock_service_twice()
@@ -76,5 +77,15 @@ class MockerContainerSpec extends ObjectBehavior
         $this->unmock('std_class.mock');
 
         $this->get('std_class.mock')->shouldReturn($service);
+    }
+
+    function it_checks_predictions_of_mocked_services(Prophet $prophet)
+    {
+        $this->setProphet($prophet);
+        $prophet->checkPredictions()->shouldBeCalled();
+
+        $this->checkPredictions();
+
+
     }
 }

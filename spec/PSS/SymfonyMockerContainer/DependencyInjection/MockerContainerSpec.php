@@ -85,7 +85,5 @@ class MockerContainerSpec extends ObjectBehavior
         $prophet->checkPredictions()->shouldBeCalled();
 
         $this->checkPredictions();
-
-
     }
 }

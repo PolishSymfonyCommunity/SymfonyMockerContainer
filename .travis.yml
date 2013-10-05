@@ -14,4 +14,5 @@ script: bin/phpspec --no-ansi --format=pretty
 notifications:
   email:
     - jakub+ci@zalas.pl
+    - cakper+ci@gmail.com
   irc: "irc.freenode.org#symfony-pl"

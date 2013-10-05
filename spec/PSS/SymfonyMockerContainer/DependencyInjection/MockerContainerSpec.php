@@ -86,4 +86,20 @@ class MockerContainerSpec extends ObjectBehavior
 
         $this->checkPredictions();
     }
+
+    function it_cleans_container()
+    {
+        $service1 = new \StdClass();
+        $service2 = new \StdClass();
+        $this->set('std_class.mock_1', $service1);
+        $this->set('std_class.mock_2', $service2);
+        $this->mock('std_class.mock_1', '\StdClass');
+        $this->mock('std_class.mock_2', '\StdClass');
+
+        $this->cleanUpMockedServices();
+
+        $this->get('std_class.mock_1')->shouldReturn($service1);
+        $this->get('std_class.mock_2')->shouldReturn($service2);
+
+    }
 }

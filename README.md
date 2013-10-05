@@ -128,11 +128,8 @@ class AcmeControllerTest extends WebTestCase
 
     public function tearDown()
     {
-        foreach ($this->client->getContainer()->getMockedServices() as $id => $service) {
-            $this->client->getContainer()->unmock($id);
-        }
-
-        \Mockery::close();
+        $this->client->getContainer()->checkPredictions();
+        $this->client->getContainer()->cleanUpMockedServices();
 
         $this->client = null;
 
@@ -141,10 +138,10 @@ class AcmeControllerTest extends WebTestCase
 
     public function testThatContactDetailsAreSubmittedToTheCrm()
     {
-        $this->client->getContainer()->mock('crm.client', 'PSS\Crm\Client')
-            ->shouldReceive('send')
-            ->once()
-            ->andReturn(true);
+        $this->client->getContainer()
+            ->mock('crm.client', 'PSS\Crm\Client')
+            ->send()
+            ->willReturn(true);
 
         // ...
     }

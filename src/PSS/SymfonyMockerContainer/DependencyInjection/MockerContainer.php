@@ -112,4 +112,14 @@ class MockerContainer extends Container
     {
         $this->prophet->checkPredictions();
     }
+
+    /**
+     * Cleans up services mocks
+     */
+    public function cleanUpMockedServices()
+    {
+        foreach (self::$mockedServices as $id => $service) {
+            $this->unmock($id);
+        }
+    }
 }

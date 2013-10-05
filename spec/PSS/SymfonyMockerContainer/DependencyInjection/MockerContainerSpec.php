@@ -1,0 +1,80 @@
+<?php
+
+namespace spec\PSS\SymfonyMockerContainer\DependencyInjection;
+
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
+class MockerContainerSpec extends ObjectBehavior
+{
+    function it_returns_empty_array_if_no_services_have_been_mocked()
+    {
+        $this->getMockedServices()->shouldReturn(array());
+    }
+
+    function it_returns_mocked_services_collection()
+    {
+        $this->set('std_class.mock', new \StdClass);
+        $mock = $this->mock('std_class.mock', '\StdClass');
+
+        $this->getMockedServices()->shouldReturn(array('std_class.mock' => $mock));
+    }
+
+    function it_returns_true_if_service_exists()
+    {
+        $this->set('std_class.mock', new \StdClass);
+
+        $this->has('std_class.mock')->shouldReturn(true);
+    }
+
+    function it_returns_true_if_is_mocked()
+    {
+        $this->set('std_class.mock', new \StdClass);
+        $this->mock('std_class.mock', '\StdClass');
+
+        $this->has('std_class.mock')->shouldReturn(true);
+    }
+
+    function it_throws_an_exception_if_mocking_unexisting_service()
+    {
+        $invalidArgumentException = new \InvalidArgumentException('Cannot mock unexisting service: "unexisting.mock"');
+        $this->shouldThrow($invalidArgumentException)->duringMock('unexisting.mock', '\StdClass');
+    }
+
+    function it_mocks_service_in_the_container()
+    {
+        $this->set('std_class.mock', new \StdClass);
+
+        $mock = $this->mock('std_class.mock', '\StdClass');
+
+        $mock->shouldBeAnInstanceOf('\StdClass');
+        $mock->shouldImplement('\Prophecy\Prophecy\ProphecySubjectInterface');
+    }
+
+    function it_doesnt_mock_service_twice()
+    {
+        $this->set('std_class.mock', new \StdClass);
+        $mock = $this->mock('std_class.mock', '\StdClass');
+
+        $this->mock('std_class.mock', '\StdClass')->shouldReturn($mock);
+    }
+
+    function it_returns_mocked_service()
+    {
+        $this->set('std_class.mock', new \StdClass);
+        $mock = $this->mock('std_class.mock', '\StdClass');
+
+        $this->get('std_class.mock')->shouldReturn($mock);
+    }
+
+    function it_unmocks_service()
+    {
+        $service = new \StdClass();
+        $this->set('std_class.mock', $service);
+        $this->mock('std_class.mock', '\StdClass');
+
+        $this->unmock('std_class.mock');
+
+        $this->get('std_class.mock')->shouldReturn($service);
+    }
+}

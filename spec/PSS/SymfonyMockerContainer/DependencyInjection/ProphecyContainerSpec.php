@@ -4,10 +4,17 @@ namespace spec\PSS\SymfonyMockerContainer\DependencyInjection;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Prophecy\Prophet;
+use Prophecy\Exception\Prediction\AggregateException;
+use Prophecy\Prophecy\ObjectProphecy;
+use PSS\SymfonyMockerContainer\Exception\ExpectationException;
 
-class MockerContainerSpec extends ObjectBehavior
+class ProphecyContainerSpec extends ObjectBehavior
 {
+    function it_implements_mocker_container_interface()
+    {
+        $this->shouldImplement('\PSS\SymfonyMockerContainer\DependencyInjection\MockerContainerInterface');
+    }
+
     function it_returns_empty_array_if_no_services_have_been_mocked()
     {
         $this->getMockedServices()->shouldReturn(array());
@@ -78,12 +85,15 @@ class MockerContainerSpec extends ObjectBehavior
         $this->get('std_class.mock')->shouldReturn($service);
     }
 
-    function it_checks_predictions_of_mocked_services(Prophet $prophet)
+    function it_verifies_expectations_of_mocked_services(ObjectProphecy $service1, ObjectProphecy $service2)
     {
-        $this->setProphet($prophet);
-        $prophet->checkPredictions()->shouldBeCalled();
+        $this->setMock('service_1', $service1);
+        $this->setMock('service_2', $service2);
 
-        $this->checkPredictions();
+        $service1->checkProphecyMethodsPredictions()->shouldBeCalled();
+        $service2->checkProphecyMethodsPredictions()->shouldBeCalled();
+
+        $this->verifyExpectations();
     }
 
     function it_cleans_container()
@@ -99,6 +109,28 @@ class MockerContainerSpec extends ObjectBehavior
 
         $this->get('std_class.mock_1')->shouldReturn($service1);
         $this->get('std_class.mock_2')->shouldReturn($service2);
+    }
 
+    function it_verifies_service_expectation_by_id(ObjectProphecy $service)
+    {
+        $this->setMock('service_id', $service);
+        $this->verifyServiceExpectationsById('service_id');
+
+        $service->checkProphecyMethodsPredictions()->shouldHaveBeenCalled();
+    }
+
+    function it_throws_an_exception_on_unmet_expectations(ObjectProphecy $service)
+    {
+        $this->setMock('service_id', $service);
+        $exception = new AggregateException();
+        $service->checkProphecyMethodsPredictions()->willThrow($exception);
+
+        $expectedExceptionClass = '\PSS\SymfonyMockerContainer\Exception\ExpectationException';
+        $this->shouldThrow($expectedExceptionClass)->duringVerifyServiceExpectationsById('service_id');
+    }
+
+    function letGo()
+    {
+        $this->cleanUpMockedServices();
     }
 }

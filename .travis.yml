@@ -9,7 +9,7 @@ before_script:
   - wget -nc http://getcomposer.org/composer.phar
   - php composer.phar install
 
-script: bin/phpspec --no-ansi --format=pretty
+script: bin/phpspec run --no-ansi --format=dot
 
 notifications:
   email:

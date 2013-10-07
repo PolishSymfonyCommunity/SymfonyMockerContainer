@@ -29,7 +29,7 @@ interface MockerContainerInterface
      *
      * @return object
      */
-    public function get($id, $invalidBehavior);
+    public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE);
 
     /**
      * @return array

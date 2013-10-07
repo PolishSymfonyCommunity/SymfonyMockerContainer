@@ -3,6 +3,7 @@
 namespace PSS\SymfonyMockerContainer\DependencyInjection;
 
 use Mockery\CountValidator\Exception;
+use Mockery\MockInterface;
 use PSS\SymfonyMockerContainer\Exception\ExpectationException;
 
 class MockeryContainer extends AbstractMockerContainer
@@ -22,10 +23,10 @@ class MockeryContainer extends AbstractMockerContainer
     /**
      * @param string $classOrInterface Class or Interface name
      *
-     * @return mixed
+     * @return MockInterface
      */
     protected function mockService($classOrInterface)
     {
-        return call_user_func_array(array('Mockery', 'mock'), func_get_args());
+        return \Mockery::mock($classOrInterface);
     }
 }

@@ -11,7 +11,7 @@ interface MockerContainerInterface
      * @param string $id               Service ID
      * @param string $classOrInterface Class name
      *
-     * @return object
+     * @return mixed
      * @throws \InvalidArgumentException
      */
     public function mock($id, $classOrInterface);
@@ -27,7 +27,7 @@ interface MockerContainerInterface
      * @param string  $id              Service Id
      * @param integer $invalidBehavior
      *
-     * @return object
+     * @return mixed
      */
     public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE);
 

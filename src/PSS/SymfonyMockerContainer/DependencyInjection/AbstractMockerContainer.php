@@ -18,7 +18,7 @@ abstract class AbstractMockerContainer extends Container implements MockerContai
      * @param string $id               Service ID
      * @param string $classOrInterface Class name
      *
-     * @return object
+     * @return mixed
      * @throws \InvalidArgumentException
      */
     public function mock($id, $classOrInterface)

@@ -5,26 +5,18 @@ namespace PSS\SymfonyMockerContainer\DependencyInjection;
 use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Prophet;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class MockerContainer extends Container
 {
-    /**
-     * @var Prophet
-     */
-    private $prophet;
-
     /**
      * @var array $mockedServices
      */
     static private $mockedServices = array();
 
-    public function __construct(ParameterBagInterface $parameterBag = null)
-    {
-        parent::__construct($parameterBag);
-
-        $this->prophet = new Prophet;
-    }
+    /**
+     * @var Prophet
+     */
+    private $prophet;
 
     /**
      * Takes an id of the service as the first argument.
@@ -44,6 +36,7 @@ class MockerContainer extends Container
 
         if (!array_key_exists($id, self::$mockedServices)) {
 
+            $this->lazyInitializeProphet();
             $service = $this->prophet->prophesize($classOrInterface);
 
             self::$mockedServices[$id] = $service;
@@ -67,11 +60,13 @@ class MockerContainer extends Container
     }
 
     /**
-     * @param string $id Service Id
+     * Initialises Prophet object
      */
-    public function unmock($id)
+    private function lazyInitializeProphet()
     {
-        unset(self::$mockedServices[$id]);
+        if (is_null($this->prophet)) {
+            $this->prophet = new Prophet;
+        }
     }
 
     /**
@@ -83,7 +78,7 @@ class MockerContainer extends Container
     public function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE)
     {
         if (array_key_exists($id, self::$mockedServices)) {
-            return self::$mockedServices[$id];
+            return self::$mockedServices[$id]->reveal();
         }
 
         return parent::get($id, $invalidBehavior);
@@ -121,5 +116,13 @@ class MockerContainer extends Container
         foreach (self::$mockedServices as $id => $service) {
             $this->unmock($id);
         }
+    }
+
+    /**
+     * @param string $id Service Id
+     */
+    public function unmock($id)
+    {
+        unset(self::$mockedServices[$id]);
     }
 }

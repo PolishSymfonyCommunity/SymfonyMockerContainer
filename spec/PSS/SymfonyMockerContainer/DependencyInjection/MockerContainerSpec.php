@@ -48,8 +48,7 @@ class MockerContainerSpec extends ObjectBehavior
 
         $mock = $this->mock('std_class.mock', '\StdClass');
 
-        $mock->shouldImplement('\Prophecy\Prophecy\ObjectProphecy');
-        $mock->reveal()->shouldBeAnInstanceOf('\StdClass');
+        $mock->shouldBeAnInstanceOf('\Prophecy\Prophecy\ObjectProphecy');
     }
 
     function it_doesnt_mock_service_twice()
@@ -65,7 +64,7 @@ class MockerContainerSpec extends ObjectBehavior
         $this->set('std_class.mock', new \StdClass);
         $mock = $this->mock('std_class.mock', '\StdClass');
 
-        $this->get('std_class.mock')->shouldReturn($mock);
+        $this->get('std_class.mock')->shouldReturnAnInstanceOf('\StdClass');
     }
 
     function it_unmocks_service()

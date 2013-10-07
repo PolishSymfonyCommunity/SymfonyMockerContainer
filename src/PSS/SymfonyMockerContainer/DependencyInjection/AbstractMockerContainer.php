@@ -23,9 +23,6 @@ abstract class AbstractMockerContainer extends Container implements MockerContai
      */
     public function mock($id, $classOrInterface)
     {
-        $arguments = func_get_args();
-        $id        = array_shift($arguments);
-
         if (!$this->has($id)) {
             throw new \InvalidArgumentException(sprintf('Cannot mock unexisting service: "%s"', $id));
         }

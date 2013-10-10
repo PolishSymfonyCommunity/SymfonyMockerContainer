@@ -43,7 +43,7 @@ If you prefer [Mockery](https://github.com/padraic/mockery) you need to add inst
 }
 ```
 
-*You have to use one of those mocking framework, otherwise MockerContainer will not work properly.*
+*You have to use one of those mocking frameworks, otherwise Mocker Container will not work properly.*
 
 
 Replace base container class with appropriate container for test environment in `app/AppKernel.php`:

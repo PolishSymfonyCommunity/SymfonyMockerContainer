@@ -2,6 +2,8 @@
 
 namespace PSS\SymfonyMockerContainer\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 interface MockerContainerInterface
 {
     /**

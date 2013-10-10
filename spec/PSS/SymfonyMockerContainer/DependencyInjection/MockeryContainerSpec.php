@@ -36,4 +36,11 @@ class MockeryContainerSpec extends ObjectBehavior
     {
         $this->cleanUpMockedServices();
     }
+
+    function it_returns_service_mocked_in_the_container(MockInterface $service)
+    {
+        $this->setMock('service_id', $service);
+
+        $this->get('service_id')->shouldReturn($service);
+    }
 }

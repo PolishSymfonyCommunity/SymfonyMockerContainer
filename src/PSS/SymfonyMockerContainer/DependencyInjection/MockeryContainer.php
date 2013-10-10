@@ -29,4 +29,19 @@ class MockeryContainer extends AbstractMockerContainer
     {
         return \Mockery::mock($classOrInterface);
     }
+
+    /**
+     * @param string  $id              Service Id
+     * @param integer $invalidBehavior
+     *
+     * @return object
+     */
+    public function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE)
+    {
+        if (array_key_exists($id, self::$mockedServices)) {
+            return self::$mockedServices[$id];
+        }
+
+        return parent::get($id, $invalidBehavior);
+    }
 }

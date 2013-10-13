@@ -18,7 +18,7 @@ Add SymfonyMockerContainer to your composer.json:
 ```js
 {
     "require": {
-        "polishsymfonycommunity/symfony-mocker-container": "~2.0.0"
+        "polishsymfonycommunity/symfony-mocker-container": ">=1.1.0"
     }
 }
 ```

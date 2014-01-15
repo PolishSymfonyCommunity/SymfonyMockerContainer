@@ -103,6 +103,11 @@ class AcmeContext extends BehatContext implements KernelAwareInterface
 Once service is mocked the container will return its mock instead of a real
 service.
 
+**Warning:**
+
+Mind that you can only mock services using MinkBrowserKitDriver. You won't be able
+to mock services using any driver that makes actual HTTP request to your applicaction.
+
 Using in Symfony functional tests
 ---------------------------------
 

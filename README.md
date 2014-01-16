@@ -10,6 +10,13 @@ Behat scenarios.
 If you want to use the mocker container with Behat try the
 [Symfony2 Mocker Extension](https://github.com/PolishSymfonyCommunity/Symfony2MockerExtension).
 
+**Warning:**
+
+Mind that you can only mock services using the BrowserKitDriver (used with Symfony2 functional
+tests and Symfony2Extension for Behat). You won't be able to mock services using any driver
+that makes actual HTTP request to your applicaction.
+
+
 Installation
 ------------
 
@@ -102,11 +109,6 @@ class AcmeContext extends BehatContext implements KernelAwareInterface
 
 Once service is mocked the container will return its mock instead of a real
 service.
-
-**Warning:**
-
-Mind that you can only mock services using MinkBrowserKitDriver. You won't be able
-to mock services using any driver that makes actual HTTP request to your applicaction.
 
 Using in Symfony functional tests
 ---------------------------------

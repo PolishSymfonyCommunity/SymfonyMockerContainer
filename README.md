@@ -25,12 +25,35 @@ Add SymfonyMockerContainer to your composer.json:
 ```js
 {
     "require": {
-        "polishsymfonycommunity/symfony-mocker-container": "*"
+        "polishsymfonycommunity/symfony-mocker-container": ">=1.1.0"
     }
 }
 ```
 
-Replace base container class for test environment in `app/AppKernel.php`::
+Choose mocking framework, if you prefer to use [Prophecy](https://github.com/phpspec/prophecy) add following require to composer.json:
+
+```js
+{
+    "require": {
+        "phpspec/prophecy": ">=1.0.0"
+    }
+}
+```
+
+If you prefer [Mockery](https://github.com/padraic/mockery) you need to add instead:
+
+```js
+{
+    "require": {
+        "mockery/mockery": ">=0.7.0"
+    }
+}
+```
+
+*You have to use one of those mocking frameworks, otherwise Mocker Container will not work properly.*
+
+
+Replace base container class with appropriate container for test environment in `app/AppKernel.php`:
 
 ```php
 <?php
@@ -41,19 +64,22 @@ Replace base container class for test environment in `app/AppKernel.php`::
 protected function getContainerBaseClass()
 {
     if ('test' == $this->environment) {
-        return '\PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer';
+        return '\PSS\SymfonyMockerContainer\DependencyInjection\ProphecyContainer'; // For Prophecy integration
+//      return '\PSS\SymfonyMockerContainer\DependencyInjection\MockeryContainer';  // For Mockery integration
     }
-    
+
     return parent::getContainerBaseClass();
 }
 ```
+
+
 
 Clear your cache.
 
 Using in Behat steps
 --------------------
 
-Use `mock()` method on the container to create a new Mock with Mockery:
+Use `mock()` method on the container to create a new Mock with Prophecy or Mockery:
 
 ```php
 <?php
@@ -88,6 +114,13 @@ class AcmeContext extends BehatContext implements KernelAwareInterface
      */
     public function crmApiIsAvailable()
     {
+        // Mock declaration with Prophecy
+        $this->kernel->getContainer()
+            ->mock('crm.client', 'PSS\Crm\Client')
+            ->send()
+            ->willReturn(true);
+
+        // Mock declaration with Mockery
         $this->kernel->getContainer()
             ->mock('crm.client', 'PSS\Crm\Client')
             ->shouldReceive('send')
@@ -102,7 +135,7 @@ class AcmeContext extends BehatContext implements KernelAwareInterface
      */
     public function verifyPendingExpectations()
     {
-        \Mockery::close();
+        $this->kernel->getContainer()->verifyExpectations();
     }
 }
 ```
@@ -136,11 +169,8 @@ class AcmeControllerTest extends WebTestCase
 
     public function tearDown()
     {
-        foreach ($this->client->getContainer()->getMockedServices() as $id => $service) {
-            $this->client->getContainer()->unmock($id);
-        }
-
-        \Mockery::close();
+        $this->client->getContainer()->verifyExpectations();
+        $this->client->getContainer()->cleanUpMockedServices();
 
         $this->client = null;
 
@@ -149,10 +179,10 @@ class AcmeControllerTest extends WebTestCase
 
     public function testThatContactDetailsAreSubmittedToTheCrm()
     {
-        $this->client->getContainer()->mock('crm.client', 'PSS\Crm\Client')
-            ->shouldReceive('send')
-            ->once()
-            ->andReturn(true);
+        $this->client->getContainer()
+            ->mock('crm.client', 'PSS\Crm\Client')
+            ->send()
+            ->willReturn(true);
 
         // ...
     }

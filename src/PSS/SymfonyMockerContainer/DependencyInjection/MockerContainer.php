@@ -60,6 +60,7 @@ class MockerContainer extends Container
     }
 
     /**
+     * @param  string $id
      * @return null
      */
     public function unmock($id)

@@ -107,7 +107,24 @@ class AcmeContext extends BehatContext implements KernelAwareInterface
 }
 ```
 
-Once service is mocked the container will return its mock instead of a real
+Or use `setMock()` to provide an existing mock object:
+
+```php
+
+    public function crmApiIsAvailable()
+    {
+        $mock = Mockery::Mock('PSS\Crm\Client');
+
+        $this->kernel->getContainer()
+            ->setMock('crm.client', $mock)
+            ->shouldReceive('send')
+            ->once()
+            ->andReturn(true);
+    }
+
+```
+
+Once the service is mocked the container will return its mock instead of a real
 service.
 
 Using in Symfony functional tests

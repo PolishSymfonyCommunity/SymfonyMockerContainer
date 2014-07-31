@@ -2,6 +2,7 @@
 
 namespace PSS\SymfonyMockerContainer\DependencyInjection;
 
+use Mockery\Mock;
 use Symfony\Component\DependencyInjection\Container;
 
 class MockerContainer extends Container
@@ -22,12 +23,37 @@ class MockerContainer extends Container
         $arguments = func_get_args();
         $id = array_shift($arguments);
 
+        $mock = call_user_func_array(array('Mockery', 'mock'), $arguments);
+
+        return $this->mockService($id, $mock);
+    }
+
+    /**
+     * Replaces a service with the provided mock object
+     *
+     * @param  string $id   The id of the service to mock
+     * @param  Mock   $mock The mock object to inject
+     * @return Mock         The mocked service
+     */
+    public function setMock($id, $mock)
+    {
+        return $this->mockService($id, $mock);
+    }
+
+    /**
+     * @param  string $id
+     * @param  mixed  $mock
+     * @return Mock
+     * @throws \InvalidArgumentException
+     */
+    protected function mockService($id, $mock)
+    {
         if (!$this->has($id)) {
             throw new \InvalidArgumentException(sprintf('Cannot mock unexisting service: "%s"', $id));
         }
 
         if (!array_key_exists($id, self::$mockedServices)) {
-            self::$mockedServices[$id] = call_user_func_array(array('Mockery', 'mock'), $arguments);
+            self::$mockedServices[$id] = $mock;
         }
 
         return self::$mockedServices[$id];

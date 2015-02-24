@@ -23,7 +23,7 @@ class MockerContainer extends Container
         $id = array_shift($arguments);
 
         if (!$this->has($id)) {
-            throw new \InvalidArgumentException(sprintf('Cannot mock unexisting service: "%s"', $id));
+            throw new \InvalidArgumentException(sprintf('Cannot mock a non-existent service: "%s"', $id));
         }
 
         if (!array_key_exists($id, self::$mockedServices)) {

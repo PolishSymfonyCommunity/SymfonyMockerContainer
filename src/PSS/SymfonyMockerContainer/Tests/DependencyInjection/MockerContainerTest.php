@@ -63,7 +63,7 @@ class MockerContainerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Cannot mock unexisting service: "test.new_service"
+     * @expectedExceptionMessage Cannot mock a non-existent service: "test.new_service"
      */
     public function testThatServiceCannotBeMockedIfItDoesNotExist()
     {

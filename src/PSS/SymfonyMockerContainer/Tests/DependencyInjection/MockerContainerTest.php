@@ -61,6 +61,22 @@ class MockerContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($mock, $this->container->get('test.service_1'));
     }
 
+    public function testThatServiceCanBeSet()
+    {
+        $mock = new \stdClass();
+        $this->container->setMock('test.service_1', $mock);
+
+        $this->assertSame($mock, $this->container->get('test.service_1'));
+    }
+
+    public function testThatUnsetServiceFallsbackToOriginalService()
+    {
+        $this->container->setMock('test.service_1', new \stdClass());
+        $this->container->unmock('test.service_1');
+
+        $this->assertSame($this->services['test.service_1'], $this->container->get('test.service_1'));
+    }
+
     /**
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Cannot mock a non-existent service: "test.new_service"

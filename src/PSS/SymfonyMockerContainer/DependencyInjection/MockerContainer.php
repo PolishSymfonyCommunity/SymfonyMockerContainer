@@ -34,6 +34,15 @@ class MockerContainer extends Container
     }
 
     /**
+     * @param string $id
+     * @param object $mock
+     */
+    public function setMock($id, $mock)
+    {
+        self::$mockedServices[$id] = $mock;
+    }
+
+    /**
      * @return null
      */
     public function unmock($id)

@@ -55,7 +55,7 @@ Clear your cache.
 Using in Behat steps
 --------------------
 
-Use `mock()` method on the container to create a new Mock with Mockery:
+Use `mock()` method on the container to replace service on your mock:
 
 ```php
 <?php
@@ -65,6 +65,7 @@ namespace PSS\Features\Context;
 use Behat\Behat\Context\BehatContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Mockery as m;
 
 class AcmeContext extends BehatContext implements KernelAwareInterface
 {
@@ -91,7 +92,7 @@ class AcmeContext extends BehatContext implements KernelAwareInterface
     public function crmApiIsAvailable()
     {
         $this->kernel->getContainer()
-            ->mock('crm.client', 'PSS\Crm\Client')
+            ->mock('crm.client', m::mock('PSS\Crm\Client'))
             ->shouldReceive('send')
             ->once()
             ->andReturn(true);
@@ -104,7 +105,7 @@ class AcmeContext extends BehatContext implements KernelAwareInterface
      */
     public function verifyPendingExpectations()
     {
-        \Mockery::close();
+        m::close();
     }
 }
 ```
@@ -121,6 +122,7 @@ Using in Symfony functional tests
 namespace PSS\Bundle\AcmeBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Mockery as m;
 
 class AcmeControllerTest extends WebTestCase
 {
@@ -142,7 +144,7 @@ class AcmeControllerTest extends WebTestCase
             $this->client->getContainer()->unmock($id);
         }
 
-        \Mockery::close();
+        m::close();
 
         $this->client = null;
 
@@ -151,7 +153,7 @@ class AcmeControllerTest extends WebTestCase
 
     public function testThatContactDetailsAreSubmittedToTheCrm()
     {
-        $this->client->getContainer()->mock('crm.client', 'PSS\Crm\Client')
+        $this->client->getContainer()->mock('crm.client', m::mock('PSS\Crm\Client'))
             ->shouldReceive('send')
             ->once()
             ->andReturn(true);

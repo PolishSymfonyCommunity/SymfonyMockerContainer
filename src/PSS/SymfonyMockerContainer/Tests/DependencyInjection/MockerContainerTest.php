@@ -4,6 +4,8 @@ namespace PSS\SymfonyMockerContainer\Tests\DependencyInjection;
 
 use PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer;
 
+use Mockery;
+
 class MockerContainerTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -110,5 +112,16 @@ class MockerContainerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->container->has('test.service_1'));
         $this->assertEquals($this->services['test.service_1'], $this->container->get('test.service_1'));
+    }
+
+    public function testThatExistingMockCanBeSet()
+    {
+        $existingMock = Mockery::Mock('stdClass');
+
+        $this->container->setMock('test.service_1', $existingMock);
+
+        $this->assertTrue($this->container->has('test.service_1'));
+        $this->assertNotSame($this->services['test.service_1'], $existingMock);
+        $this->assertSame($existingMock, $this->container->get('test.service_1'));
     }
 }

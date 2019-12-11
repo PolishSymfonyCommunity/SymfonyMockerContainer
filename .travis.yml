@@ -1,12 +1,14 @@
 language: php
 
-php:
-  - 7.2
-  - 7.3
-  - 7.4
+matrix:
+  include:
+    - php: 7.2
+      env: deps=low
+    - php: 7.3
+    - php: 7.4
 
 install:
-  - composer install
+  - if [[ $deps = low ]]; then composer update --prefer-lowest --prefer-stable; else composer install; fi
 
 script:
   - ./vendor/bin/phpunit --coverage-text

@@ -24,6 +24,6 @@
         "phpunit/phpunit": "^8.4"
     },
     "autoload": {
-        "psr-0": { "PSS\\SymfonyMockerContainer": "src/" }
+        "psr-4": { "PSS\\SymfonyMockerContainer\\": "src/" }
     }
 }

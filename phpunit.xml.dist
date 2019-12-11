@@ -4,7 +4,7 @@
 
     <testsuites>
         <testsuite name="SymfonyMockerContainer test suite">
-            <directory suffix="Test.php">./src/PSS/SymfonyMockerContainer/Tests</directory>
+            <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
 
@@ -12,7 +12,7 @@
         <whitelist>
             <directory>./src</directory>
             <exclude>
-                <directory>./src/PSS/SymfonyMockerContainer/Tests</directory>
+                <directory>./tests</directory>
                 <directory>./vendor</directory>
             </exclude>
         </whitelist>

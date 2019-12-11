@@ -3,8 +3,9 @@
 namespace PSS\SymfonyMockerContainer\Tests\DependencyInjection;
 
 use PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer;
+use PHPUnit\Framework\TestCase;
 
-class MockerContainerTest extends \PHPUnit_Framework_TestCase
+class MockerContainerTest extends TestCase
 {
     /**
      * @var \PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer $container
@@ -16,7 +17,7 @@ class MockerContainerTest extends \PHPUnit_Framework_TestCase
      */
     private $services = array();
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = new MockerContainer();
         $this->services = array('test.service_1' => null, 'test.service_2' => null, 'test.service_3' => null);
@@ -34,7 +35,7 @@ class MockerContainerTest extends \PHPUnit_Framework_TestCase
      * As the mocks are never cleared during the execution
      * we have to do it manually.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $reflection = new \ReflectionClass('PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer');
         $property = $reflection->getProperty('mockedServices');
@@ -61,12 +62,10 @@ class MockerContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($mock, $this->container->get('test.service_1'));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Cannot mock a non-existent service: "test.new_service"
-     */
     public function testThatServiceCannotBeMockedIfItDoesNotExist()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot mock a non-existent service: "test.new_service"');
         $this->container->mock('test.new_service', 'stdClass');
     }
 

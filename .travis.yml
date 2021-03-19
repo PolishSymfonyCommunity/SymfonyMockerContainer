@@ -6,6 +6,7 @@ matrix:
       env: deps=low
     - php: 7.3
     - php: 7.4
+    - php: 8.0
 
 install:
   - if [[ $deps = low ]]; then composer update --prefer-lowest --prefer-stable; else composer install; fi

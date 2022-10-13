@@ -3,6 +3,14 @@ language: php
 matrix:
   include:
     - php: 8.0
+      env: SYMFONY_VERSION=^4.3
+    - php: 8.0
+      env: SYMFONY_VERSION=^5.0
+    - php: 8.0
+      env: SYMFONY_VERSION=^6.0
+
+before_install:
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require --dev --no-update symfony/symfony:$SYMFONY_VERSION; fi
 
 install:
   - if [[ $deps = low ]]; then composer update --prefer-lowest --prefer-stable; else composer install; fi

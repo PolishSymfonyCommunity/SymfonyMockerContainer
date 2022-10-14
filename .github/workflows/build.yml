@@ -1,0 +1,56 @@
+name: Build
+
+on:
+  push: ~
+  pull_request: ~
+  workflow_dispatch: ~
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+          php: ["8.0", "8.1"]
+          symfony: ["^5.4", "^6.0"]
+
+    steps:
+
+    -
+        uses: actions/checkout@v3
+
+    -
+        name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+            php-version: "${{ matrix.php }}"
+
+    -
+        name: Restrict Symfony version
+        if: matrix.symfony != ''
+        run: |
+            composer global config --no-plugins allow-plugins.symfony/flex true
+            composer global require --no-progress --no-scripts --no-plugins "symfony/flex:^1.10"
+            composer config extra.symfony.require "${{ matrix.symfony }}"
+
+    -
+        name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+    -
+        name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+    -
+        name: Install dependencies
+        run: composer update --prefer-dist --no-progress
+
+    -
+        name: Run PHPUnit
+        run: vendor/bin/phpunit --colors=always

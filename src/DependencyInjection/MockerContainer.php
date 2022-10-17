@@ -47,7 +47,7 @@ class MockerContainer extends Container
      *
      * @return object
      */
-    public function get(string $id, int $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE): ?object
+    public function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE): ?object
     {
         if (array_key_exists($id, self::$mockedServices)) {
             return self::$mockedServices[$id];
@@ -61,7 +61,7 @@ class MockerContainer extends Container
      *
      * @return boolean
      */
-    public function has(string $id): bool
+    public function has($id): bool
     {
         if (array_key_exists($id, self::$mockedServices)) {
             return true;

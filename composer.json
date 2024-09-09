@@ -25,5 +25,10 @@
     },
     "autoload": {
         "psr-4": { "PSS\\SymfonyMockerContainer\\": "src/" }
+    },
+    "extra": {
+        "symfony": {
+            "require": "7.0.*"
+        }
     }
 }
